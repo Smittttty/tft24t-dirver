@@ -283,13 +283,13 @@ int main(void)
 	draw_rect2.velocity.x = draw_rect2.velocity.y = -20;
 
 	nucleo_clock_sysclk(100);
-    rcc_setup();
-    gpio_master_spi_setup();
+	rcc_setup();
+	gpio_master_spi_setup();
 
 	//nucleo_stm32f446_frequency( 32 );
 
-    pccom_setup( USART2 );
-    spi_master_setup( SPI1 );
+	pccom_setup( USART2 );
+	spi_master_setup( SPI1 );
 	init_lcd();
 	display();
 	//lcd_send(ILI9341_CASET, ILI9341_COMMAND);
