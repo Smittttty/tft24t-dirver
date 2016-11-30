@@ -1,6 +1,6 @@
 # tft24t-dirver
 
-This is a c library that works with openlibcm3 to control the TJCTM24024-SPI lcd display. The implementation was tested on the *Nucleo-446re*.
+This is a c library that works with libopencm3 to control the TJCTM24024-SPI lcd display. The implementation was tested on the *Nucleo-446re*.
 
 The TJCTM24024-SPI is a 2.4 inch SPI TFT 320x240 pixel display. These are fairly inexpensive displays that you can find on eBay.
 
