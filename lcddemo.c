@@ -64,7 +64,6 @@ void delay_cycles( uint32_t cycles )
 
 static void rcc_setup(void)
 {
-    // clock for USARTs, SPI ports
     rcc_periph_clock_enable(RCC_GPIOA);
     rcc_periph_clock_enable(RCC_GPIOB);
     rcc_periph_clock_enable(RCC_GPIOC);
@@ -90,13 +89,12 @@ static void spi_master_setup( uint32_t spi )
 {
 	spi_reset( spi );
 	spi_set_master_mode( spi );
-	//spi_set_baudrate_prescaler( spi, SPI_CR1_BR_FPCLK_DIV_2);
+	spi_set_baudrate_prescaler( spi, SPI_CR1_BR_FPCLK_DIV_2);
 	spi_send_msb_first( spi );
 	spi_set_unidirectional_mode( spi );
 	spi_set_dff_8bit( spi );
 	spi_set_standard_mode( spi, MODE );
 
-	// required if hardware nss not used
 	spi_enable_software_slave_management( spi );
 	spi_set_nss_high( spi );
 
@@ -176,7 +174,6 @@ void init_ili9341(void)
 	lcd_send(0x82, ILI9341_DATA);
 	lcd_send(0x27, ILI9341_DATA);
 
-	//look up command.
 	lcd_send(0xF2, ILI9341_COMMAND);
 	lcd_send(0x00, ILI9341_DATA);
 
@@ -213,8 +210,7 @@ void reset_lcd(void)
 void init_lcd(void)
 {
 	gpio_mode_setup(GPIOC, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, LCDLED|LCDCS|LCDDC|LCDRST);
-
-
+	
 	//turn backlight on
 	gpio_set(GPIOC, LCDLED);
 	reset_lcd();
@@ -270,13 +266,10 @@ void display()
 
 	update_rect(&draw_rect);
 	update_rect(&draw_rect2);
-	//check_collision(&draw_rect, &draw_rect2);
 }
 
 int main(void)
 {
-	//ram_intr_setup();
-
 	draw_rect.x = 50; draw_rect.y = 50; draw_rect.width = 50; draw_rect.height = 50;
 	draw_rect2.x = 150; draw_rect2.y = 50; draw_rect2.width = 50; draw_rect2.height = 50;
 	draw_rect.velocity.x = draw_rect.velocity.y = 20;
@@ -285,14 +278,11 @@ int main(void)
 	nucleo_clock_sysclk(100);
 	rcc_setup();
 	gpio_master_spi_setup();
-
-	//nucleo_stm32f446_frequency( 32 );
-
 	pccom_setup( USART2 );
 	spi_master_setup( SPI1 );
 	init_lcd();
 	display();
-	//lcd_send(ILI9341_CASET, ILI9341_COMMAND);
+
 	while(true){
 		display();
 		//delay_cycles(100000);
